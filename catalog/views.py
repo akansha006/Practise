@@ -23,15 +23,15 @@ def index(request):
     )
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
-class MyView(LoginRequiredMixin, View):
+class MyView(LoginRequiredMixin, generic.ListView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
 
 class BookListView(generic.ListView):
     model = Book
-paginate_by=2
-'''
+    paginate_by=2
+    '''
 	def get_queryset(self):
         return Book.objects.filter(title__icontains='war')[:5] # Get 5 books containing the title war
     def get_context_data(self, **kwargs):
@@ -40,7 +40,7 @@ paginate_by=2
         # Create any data and add it to the context
         context['some_data'] = 'This is just some data'
         return context
-'''
+    '''
 class BookDetailView(generic.DetailView):
     model = Book
 class AuthorListView(generic.ListView):
@@ -50,16 +50,14 @@ class AuthorDetailView(generic.DetailView):
 	
 from django.contrib.auth.decorators import login_required
 
-@login_required
-def my_view(request):
 
-    class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
+class LoanedBooksByUserListView(LoginRequiredMixin,generic.ListView):
         model = BookInstance
         template_name ='catalog/bookinstance_list_borrowed_user.html'
         paginate_by = 10
     
-    def get_queryset(self):
-        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
+        def get_queryset(self):
+            return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.urls import reverse

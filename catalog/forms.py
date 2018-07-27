@@ -20,14 +20,3 @@ class RenewBookForm(forms.Form):
 
         # Remember to always return the cleaned data.
         return data
-<tr>
-  <th><label for="id_renewal_date">Renewal date:</label></th>
-   <td>
-      <ul class="errorlist">
-        <li>Invalid date - renewal in past</li>
-      </ul>
-      <input id="id_renewal_date" name="renewal_date" type="text" value="2015-11-08" required />
-      <br />
-      <span class="helptext">Enter date between now and 4 weeks (default 3 weeks).</span>
-    </td>
-</tr>
